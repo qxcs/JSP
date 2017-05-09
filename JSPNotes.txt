@@ -1,0 +1,101 @@
+一、JSP 代码
+1、 <%    %>中间可以java代码
+2、<%!   %> 中间可以用java声明 变量或者方法
+3、 <%=表达式 %>   后面没有分号
+
+二、JSP九大内置对象--out
+
+1、向客户端输出内容的对象
+2、 void println()  打印字符串，可以打印html
+3、void clear() 清楚缓冲区内容，flush之后会异常
+4、void clearBuffer() 清除缓冲区内容，flush之后不会异常
+5、void flush() 将缓冲区内容输出到客户端
+6、int getBufferSize() 返回缓冲区字节数的大小
+7、int getRamaining() 返回缓冲区剩余空间大小
+8、boolean isAutoFlush() 返回缓冲区满时，是自动清空还是抛出异常
+9、void close() 关闭输出流
+
+三、JSP九大内置对象--request
+
+1、request.getParameter() 获取单个值
+2、request.getParameterValue()  获取多个值，比如checkBox
+3、request.setAttibute(name,value)  保存属性值
+4、request.getArribute(name)  获得属性值
+
+四、JSP九大内置对象--response
+
+1、getCharacterEncoding() 返回响应的字符编码
+2、setContentType() 设置响应的MIME类型
+3、getWriter() 返回向客户端输出字符串的一个对象  输出会提前于内置out对象
+4、sendRedirect() 重新定向客户端的请求
+
+五、请求重定向和请求转发
+
+1、请求重定向等同于两次请求，不会保存之前的对象，url地址会变。客户给a，a让客户去b。
+2、请求转发是一次请求，之前的对象会保存，url地址不会变。客户给a，a帮客户去了b，然后结果再给a。
+
+六、JSP九大内置对象--session
+
+1、session是一个特殊的时间段，即用户访问该网站的第一个页面开始，到离开所有网站，所有。
+2、getCreationTime() 返回session创建时间
+3、setAttribute(name，value)  保存键值对
+4、getAttribute  得到键值对值
+5、getValueNames 返回该session包含的所有可用属性的数组
+6、getMaxInactiveInterval() 返回两次请求间隔多长时间此session被取消或者set来进行设置
+7、session的销毁只有三种，即使创建了一个新的，旧的仍存在，只是不会被携带了。session.invalidate（），超时(session方法，web.xml中session-config标签)，服务器重启。
+
+七、JSP九大内置对象--application
+
+1、application是属于服务器的对象，各个用户各个会话共有的。
+2、application.setAttibute(),application.getAttibute(),application.getAttibutenames()。
+
+八、JSP九大内置对象--page
+
+1、page值当前jsp页面本身，类似this
+
+九、JSP九大内置对象--pageContext
+
+1、可以访问页面内部的所有对象和名字空间
+2、pageContext.getSession(),pagecontext.include("my.jsp"),pageContext.forward("des.jsp")。
+
+十、JSP九大内置对象--config
+
+1、config和servlet初始化时有关
+
+十一、JSP九大内置对象--Exception
+
+1、Exception是一个异常对象，使用此对象前需要把isPageError设为true，同时需要在page属性中加上errorPage属性，表示出现异常时交给哪个页面去处理异常。
+2、Exception.getMessage(),Exception.toString()。
+
+*******************************************************************************************************************************************
+*******************************************************************************************************************************************
+一、javaBean
+
+1、javaBean的设计原则：
+	a、公有类
+	b、无参的公共构造方法
+	c、属性私有
+	d、各属性的get和set方法
+2、普通方式创建javaBean对象。在jsp中导入java类，然后正常使用
+3、通过使用jsp动作标签创建javaBean对象。
+	a、useBeans动作		<jsp:useBean id="标示符" class="java类名" scope="作用范围"/> scope有page(当前页)，request(本次请求)，ssion(本次会话)，application()全局四种。
+	b、setProperty动作	<jsp:setProperty name="javaBean实例名" property="*"/>    *表示和表单相关,也可以将*替换为属性名，表示匹配部分属性名。
+				<jsp:setProperty name="javaBean实例名" property="属性名" value="自己设置属性值"/>			
+	c、getProperty动作	<jsp:getProperty name="javaBeans实例名" property="属性名"/>
+*******************************************************************************************************************************************
+*******************************************************************************************************************************************
+一、cookie
+
+1、cookie是保存在客户端上的。
+2、new Cookie("键","值") ,setMaxAge(),setValue(),getName(),getValue(),getMaxAge()
+3、response.addCookie(cookie)保存cookie
+4、request.getCookie(cookie) 获得cookie
+5、URLEncoder.encode("string","utf-8") 转码，解决无法保存中文字符串的问题，对应的为Decoder
+*******************************************************************************************************************************************
+*******************************************************************************************************************************************
+一、指令与动作
+1、include指令  <%@ include file="URL"%>   类似于宏定义，将会转换为一个servlet，编译较慢，执行较快
+2、include动作  <jsp:include page="url" flush="true|false"/> 类似于函数，将会转换为两个独立的servlet，编译较快，运行较慢
+
+3、forward动作 <jsp:forward page="url"/>  等同于request.getRequestDispacher("/url").forward(request,response);
+4、param动作 <jsp:param name="参数名" value="参数值">
